@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dineshkrish.*;
 
+import twitter4j.TwitterException;
+
 public class test {
 
 	static BlockingQueue<String> queueWordsToBeChecked = new LinkedBlockingQueue<>();
@@ -130,7 +132,7 @@ public class test {
 		return best_player;
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, TwitterException {
 
 		int numConsumateurThreads = 10;
 		String playerName = "Barcik"; // todo: pegar nome do usuario
@@ -140,6 +142,8 @@ public class test {
 		AtomicInteger maxPointsEver = getMaxPoints();
 		Thread[] threads = new Thread[numConsumateurThreads];
 		AtomicInteger newPlayerPoints = new AtomicInteger(0);
+		
+		TwitterTrendingTopics.writeTwitterTrendingTopics();
 
 		for (int i = 0; i < numConsumateurThreads; i++) {
 			threads[i] = new Thread(new ConsumateurCheckWord(maxPointsEver, newPlayerPoints, queueWordsToBeChecked,
